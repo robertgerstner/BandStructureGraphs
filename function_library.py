@@ -39,7 +39,7 @@ def display_chain(G, outer_nodes = [0,1], layout = None): #, outer_nodes, layout
     if layout is None:
         pos = nx.spring_layout(G, pos = outer_positions, fixed = outer_nodes)
     elif layout == 'circular':
-        pos = nx.circular_layout(G, pos = outer_positions, fixed = outer_nodes)
+        pos = nx.circular_layout(G, center = outer_nodes)
     # Draw graph
     fig, axis = plt.subplots()
     nx.draw_networkx(G, 
