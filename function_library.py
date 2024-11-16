@@ -61,6 +61,7 @@ def display_chain(G, outer_nodes = [0,1]): #, outer_nodes, layout):
                                  font_color = 'k',
                                  ax = axis,
                                  clip_on = True)
+    plt.show()
     
 
 def band_structure(G, outer_nodes, hopping = -1, ka_num = 100):
@@ -143,6 +144,7 @@ def plot_bands(G, outer_nodes, hopping = -1, ka_num = 100, electrons_per_cell = 
     axis.set_xlabel(r'$k$')
     axis.set_ylabel(r'$E$')
     axis.legend()
+    plt.show()
 
 
 # testing

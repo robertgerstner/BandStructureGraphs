@@ -3,10 +3,16 @@ import matplotlib.pyplot as plt
 
 # Import functions
 
-from function_library import optimal_arrangement, display_chain, band_structure, fermi_level, plot_bands, generate_unitary, isospectral
+from function_library import display_chain, band_structure, fermi_level, plot_bands
 
-# Experiment 1: Circular chains
+# EXPERIMENT 1: CIRCULAR CHAINS
 
-# Experiment 2: Some real crystals
+# Build a graph for a circular chain of N = 10 atoms per unit cell
+circularGraph = nx.cycle_graph(10)
+outer_nodes = [0, 5]
+display_chain(circularGraph, outer_nodes)
 
-# Experiment 3: Random matrices
+# EXPERIMENT 2: REAL CRYSTALS
+
+
+# EXPERIMENT 3: RANDOM MATRICES
