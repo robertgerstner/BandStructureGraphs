@@ -20,12 +20,13 @@ List of functions in this library:
 '''
 
 
-def display_chain(G, outer_nodes = [0,1]): #, outer_nodes, layout):
+def display_chain(G, outer_nodes = [0,1], layout = None): #, outer_nodes, layout):
     '''
     Function to display a unit cell of the one-dimensional periodic atomic chain.
     Inputs:
     - G: networkx graph representing the unit cell.
     - outer_nodes: list of the two nodes connected to adjacent unit cells (default [0,1]).
+    - layout: layout for graph display (default spring_layout)
     '''
     '''
     to do:
@@ -35,7 +36,10 @@ def display_chain(G, outer_nodes = [0,1]): #, outer_nodes, layout):
     '''
     # compute layout
     outer_positions = {outer_nodes[0]: (-1,0), outer_nodes[1]: (1,0)}
-    pos = nx.spring_layout(G, pos = outer_positions, fixed = outer_nodes)
+    if layout is None:
+        pos = nx.spring_layout(G, pos = outer_positions, fixed = outer_nodes)
+    elif layout == 'circular':
+        pos = nx.circular_layout(G, pos = outer_positions, fixed = outer_nodes)
     # Draw graph
     fig, axis = plt.subplots()
     nx.draw_networkx(G, 
