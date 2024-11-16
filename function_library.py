@@ -111,7 +111,7 @@ def fermi_level(G, outer_nodes, hopping = -1, ka_num = 100, electrons_per_cell =
     bands = band_structure(G, outer_nodes, hopping, ka_num)
     energy_states = np.sort(bands.flatten()) # all energy states from smallest to largest
     # Fill the electrons satisfying Pauli exclusion
-    fermi_level = energy_states[np.ceil(electrons_filling/2) - 1]
+    fermi_level = energy_states[int(np.ceil(electrons_filling/2)) - 1]
     # If unfilled band, fermi level is highest occupied energy state; if filled band, fermi level is in middle of gap above the band (if gap exists)
     # Check if fermi_level is at the top of a band
     band_maxima = np.max(bands, axis = 0)
