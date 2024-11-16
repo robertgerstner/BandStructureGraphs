@@ -137,7 +137,7 @@ def plot_bands(G, outer_nodes, hopping = -1, ka_num = 100, electrons_per_cell = 
     for i in range(G.number_of_nodes()):
         axis.plot(ka, bands[:, i]) # plotting bands
     fermilevel = fermi_level(G, outer_nodes, hopping, ka_num, electrons_per_cell)
-    axis.axhline(fermilevel, label = 'Fermi Level')
+    axis.axhline(fermilevel, color = 'k', linestyle = '--', label = 'Fermi Level')
     tick_labels = [r'$-\frac{\pi}{a}$', r'$-\frac{\pi}{2a}$', r'$0$', r'$\frac{\pi}{2a}$', r'$\frac{\pi}{a}$']
     ticks = [-np.pi, -np.pi/2, 0, np.pi/2, np.pi]
     axis.set_xticks(ticks, tick_labels)
