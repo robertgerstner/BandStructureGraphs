@@ -2,7 +2,6 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
-import scipy.linalg
 
 '''
 Graphs are used to represent unit cells of atomic chains. 
@@ -18,8 +17,6 @@ List of functions in this library:
 - band_structure: computes the band structure of the 1d chain
 - fermi_level: computes the fermi level of the 1d chain
 - plot_bands: plots the band structure of the 1d chain
-- generate_unitary: generates a random unitary matrix
-- isospectral: generates the adjacency matrix of an isospectral graph
 '''
 
 
@@ -98,13 +95,13 @@ def fermi_level(G, outer_nodes, hopping = -1, ka_num = 100, electrons_per_cell =
     - outer_nodes: list of the two nodes connected to adjacent unit cells.
     - hopping: hopping amplitude between the atoms connecting unit cells (default -1).
     - ka_num: discretized number of momentum points to evaluate (default 100).
-    - number_electrons: number of electrons in a unit cell (default one per atom)
+    - electrons_per_cell: number of electrons in a unit cell (default one per atom)
     Returns:
     - fermi: Fermi level of the system.
     '''
-    if number_electrons is None:
-        number_electrons = G.number_of_nodes() # default one electron per atom
-    if number_electrons > 2 * G.number_of_nodes():
+    if electrons_per_cell is None:
+        electrons_per_cell = G.number_of_nodes() # default one electron per atom
+    if electrons_per_cell > 2 * G.number_of_nodes():
         print('error: cannot exceed two electrons per atom')
         return
     N = ka_num # placeholder for discretization
@@ -121,28 +118,31 @@ def fermi_level(G, outer_nodes, hopping = -1, ka_num = 100, electrons_per_cell =
     for i,maxima in enumerate(band_maxima):
         if fermi_level == maxima:
             if i+1 < len(band_minima): #ensure it isn't the top band
-                fermi_level = fermi_level + band_minima[i+1]
+                fermi_level = (fermi_level + band_minima[i+1]) / 2
     return fermi_level
 
-def plot_bands(G, outer_nodes, hopping = -1, ka_num = 100, fermi_level = True):
+def plot_bands(G, outer_nodes, hopping = -1, ka_num = 100, electrons_per_cell = None):
     '''
     Function to plot the band structure of the 1d chain with unit cell given by the graph G.
     - G: networkx graph representing the unit cell.
     - outer_nodes: list of the two nodes connected to adjacent unit cells.
     - hopping: hopping amplitude between the atoms connecting unit cells (default -1).
     - ka_num: discretized number of momentum points to evaluate (default 100).
-    - fermi_level: boolean; whether to display the fermi level (default True).
+    - electrons_per_cell: number of electrons per cell for fermi level calculation (default one per atom).
     '''
     bands = band_structure(G, outer_nodes, hopping, ka_num)
     ka = np.linspace(-np.pi, np.pi, ka_num)
     fig, axis = plt.subplots()
     for i in range(G.number_of_nodes()):
-        axis.plot(ka, bands[:, i])
+        axis.plot(ka, bands[:, i]) # plotting bands
+    fermilevel = fermi_level(G, outer_nodes, hopping, ka_num, electrons_per_cell)
+    axis.axhline(fermilevel, label = 'Fermi Level')
     tick_labels = [r'$-\frac{\pi}{a}$', r'$-\frac{\pi}{2a}$', r'$0$', r'$\frac{\pi}{2a}$', r'$\frac{\pi}{a}$']
     ticks = [-np.pi, -np.pi/2, 0, np.pi/2, np.pi]
-    plt.xticks(ticks, tick_labels)
-    plt.xlabel(r'$k$')
-    plt.ylabel(r'$E$')
+    axis.set_xticks(ticks, tick_labels)
+    axis.set_xlabel(r'$k$')
+    axis.set_ylabel(r'$E$')
+    axis.legend()
 
 
 # testing
