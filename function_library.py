@@ -52,7 +52,8 @@ def display_chain(G, axis, outer_nodes = [0,1], layout = None, title = 'Graph Dr
                      linewidths = 1.0,
                      width = 1.5,
                      edge_color = 'k',
-                     font_color = 'white')
+                     font_color = 'white',
+                     font_size = 8)
     # Label edges with weights
     weights = nx.get_edge_attributes(G, 'weight')
     rounded_weights = {edge: round(weight, 4) for edge, weight in weights.items()}  # round to 4 decimals
