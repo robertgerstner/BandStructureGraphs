@@ -60,7 +60,7 @@ def display_chain(G, axis, outer_nodes = [0,1], layout = None):
     rounded_weights = {edge: round(weight, 4) for edge, weight in weights.items()}  # round to 4 decimals
     nx.draw_networkx_edge_labels(G,
                                  pos = pos,
-                                 edge_labels = weights,
+                                 edge_labels = rounded_weights,
                                  label_pos = 0.5, 
                                  font_size = 8,
                                  font_color = 'k',
