@@ -153,13 +153,13 @@ def plot_bands(G, axis, outer_nodes, hopping = -1, ka_num = 100, electrons_per_c
     axis.set_title(title)
 
 
-def graph_with_bands(G, outer_nodes, hopping = -1, ka_num = 100, electrons_per_cell = None, title = None):
+def graph_with_bands(G, outer_nodes, hopping = -1, ka_num = 100, electrons_per_cell = None, title = None, layout = None):
     '''
     Function to plot both the graph drawing and the band structure as one figure.
     '''
-    fig, (axis1, axis2) = plt.subplots(1, 2, figsize=(12, 6))  # 1 row, 2 columns
+    fig, (axis1, axis2) = plt.subplots(1, 2, figsize=(12, 6))
     fig.suptitle(title)
-    display_chain(G, axis = axis1, outer_nodes = outer_nodes, layout='circular')
+    display_chain(G, axis = axis1, outer_nodes = outer_nodes, layout = layout)
     plot_bands(G, axis = axis2, outer_nodes = outer_nodes, hopping = hopping, electrons_per_cell = electrons_per_cell)
     plt.tight_layout()
     plt.show()
