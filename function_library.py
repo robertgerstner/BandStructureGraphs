@@ -20,7 +20,7 @@ List of functions in this library:
 '''
 
 
-def display_chain(G, axis, outer_nodes = [0,1], layout = None): #, outer_nodes, layout):
+def display_chain(G, axis, outer_nodes = [0,1], layout = None):
     '''
     Function to display a unit cell of the one-dimensional periodic atomic chain.
     Inputs:
@@ -65,6 +65,7 @@ def display_chain(G, axis, outer_nodes = [0,1], layout = None): #, outer_nodes, 
                                  font_color = 'k',
                                  ax = axis,
                                  clip_on = True)
+    axis.set_title('Graph Drawing')
     
 
 def band_structure(G, outer_nodes, hopping = -1, ka_num = 100):
@@ -125,7 +126,7 @@ def fermi_level(G, outer_nodes, hopping = -1, ka_num = 100, electrons_per_cell =
                 fermi_level = (fermi_level + band_minima[i+1]) / 2
     return fermi_level
 
-def plot_bands(G, axis, outer_nodes, hopping = -1, ka_num = 100, electrons_per_cell = None, title = None):
+def plot_bands(G, axis, outer_nodes, hopping = -1, ka_num = 100, electrons_per_cell = None, title = 'Band Structure'):
     '''
     Function to plot the band structure of the 1d chain with unit cell given by the graph G.
     - G: networkx graph representing the unit cell.
