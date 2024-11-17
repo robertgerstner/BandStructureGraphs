@@ -117,6 +117,7 @@ def fermi_level(G, outer_nodes, hopping = -1, ka_num = 100, electrons_per_cell =
     # Check if fermi_level is at the top of a band
     band_maxima = np.max(bands, axis = 0)
     band_minima = np.min(bands, axis = 0)
+    band_gap = 0
     for i,maxima in enumerate(band_maxima):
         if fermi_level == maxima:
             if i+1 < len(band_minima): #ensure it isn't the top band
