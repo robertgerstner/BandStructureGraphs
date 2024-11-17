@@ -133,15 +133,16 @@ def plot_bands(G, outer_nodes, hopping = -1, ka_num = 100, electrons_per_cell = 
     - outer_nodes: list of the two nodes connected to adjacent unit cells.
     - hopping: hopping amplitude between the atoms connecting unit cells (default -1).
     - ka_num: discretized number of momentum points to evaluate (default 100).
-    - electrons_per_cell: number of electrons per cell for fermi level calculation (default one per atom).
+    - electrons_per_cell: list of number of electrons per cell for fermi level calculation (default one per atom).
     '''
     bands = band_structure(G, outer_nodes, hopping, ka_num)
     ka = np.linspace(-np.pi, np.pi, ka_num)
     fig, axis = plt.subplots()
     for i in range(G.number_of_nodes()):
         axis.plot(ka, bands[:, i]) # plotting bands
-    fermilevel = fermi_level(G, outer_nodes, hopping, ka_num, electrons_per_cell)
-    axis.axhline(fermilevel, color = 'k', linestyle = '--', label = 'Fermi Level')
+    for e in electrons_per_cell:
+        fermilevel = fermi_level(G, outer_nodes, hopping, ka_num, e)
+        axis.axhline(fermilevel, color = 'k', linestyle = '--', label = 'Fermi Level, n = {n}'.format(electrons_per_cell))
     tick_labels = [r'$-\frac{\pi}{a}$', r'$-\frac{\pi}{2a}$', r'$0$', r'$\frac{\pi}{2a}$', r'$\frac{\pi}{a}$']
     ticks = [-np.pi, -np.pi/2, 0, np.pi/2, np.pi]
     axis.set_xticks(ticks, tick_labels)
