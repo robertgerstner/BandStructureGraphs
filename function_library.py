@@ -20,11 +20,12 @@ List of functions in this library:
 '''
 
 
-def display_chain(G, outer_nodes = [0,1], layout = None): #, outer_nodes, layout):
+def display_chain(G, axis, outer_nodes = [0,1], layout = None): #, outer_nodes, layout):
     '''
     Function to display a unit cell of the one-dimensional periodic atomic chain.
     Inputs:
     - G: networkx graph representing the unit cell.
+    - axis: axis to plot it on
     - outer_nodes: list of the two nodes connected to adjacent unit cells (default [0,1]).
     - layout: layout for graph display (default spring_layout)
     '''
@@ -41,7 +42,6 @@ def display_chain(G, outer_nodes = [0,1], layout = None): #, outer_nodes, layout
     elif layout == 'circular':
         pos = nx.circular_layout(G, center = outer_nodes)
     # Draw graph
-    fig, axis = plt.subplots()
     nx.draw_networkx(G, 
                      pos = pos,
                      arrows = None, #must be an undirected graph
@@ -65,7 +65,6 @@ def display_chain(G, outer_nodes = [0,1], layout = None): #, outer_nodes, layout
                                  font_color = 'k',
                                  ax = axis,
                                  clip_on = True)
-    plt.show()
     
 
 def band_structure(G, outer_nodes, hopping = -1, ka_num = 100):
@@ -126,10 +125,11 @@ def fermi_level(G, outer_nodes, hopping = -1, ka_num = 100, electrons_per_cell =
                 fermi_level = (fermi_level + band_minima[i+1]) / 2
     return fermi_level
 
-def plot_bands(G, outer_nodes, hopping = -1, ka_num = 100, electrons_per_cell = None, title = None):
+def plot_bands(G, axis, outer_nodes, hopping = -1, ka_num = 100, electrons_per_cell = None, title = None):
     '''
     Function to plot the band structure of the 1d chain with unit cell given by the graph G.
     - G: networkx graph representing the unit cell.
+    - axis: axis to plot it on
     - outer_nodes: list of the two nodes connected to adjacent unit cells.
     - hopping: hopping amplitude between the atoms connecting unit cells (default -1).
     - ka_num: discretized number of momentum points to evaluate (default 100).
@@ -138,7 +138,6 @@ def plot_bands(G, outer_nodes, hopping = -1, ka_num = 100, electrons_per_cell = 
     '''
     bands = band_structure(G, outer_nodes, hopping, ka_num)
     ka = np.linspace(-np.pi, np.pi, ka_num)
-    fig, axis = plt.subplots()
     for i in range(G.number_of_nodes()):
         axis.plot(ka, bands[:, i]) # plotting bands
     for e in electrons_per_cell:
@@ -152,6 +151,17 @@ def plot_bands(G, outer_nodes, hopping = -1, ka_num = 100, electrons_per_cell = 
     axis.set_ylabel(r'$E$')
     axis.set_xlim(-np.pi,np.pi)
     axis.set_title(title)
+
+
+def graph_with_bands(G, outer_nodes, hopping = -1, ka_num = 100, electrons_per_cell = None, title = None):
+    '''
+    Function to plot both the graph drawing and the band structure as one figure.
+    '''
+    fig, (axis1, axis2) = plt.subplots(1, 2, figsize=(12, 6))  # 1 row, 2 columns
+    fig.suptitle(title)
+    display_chain(G, axis = axis1, outer_nodes = outer_nodes, layout='circular')
+    plot_bands(G, axis = axis2, outer_nodes = outer_nodes, hopping = hopping, electrons_per_cell = electrons_per_cell)
+    plt.tight_layout()
     plt.show()
 
 
