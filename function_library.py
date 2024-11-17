@@ -104,6 +104,7 @@ def fermi_level(G, outer_nodes, hopping = -1, ka_num = 100, electrons_per_cell =
     - electrons_per_cell: number of electrons in a unit cell (default one per atom)
     Returns:
     - fermi: Fermi level of the system.
+    - band_gap: size of the band gap if the fermi level lies inside of one.
     '''
     if electrons_per_cell is None:
         electrons_per_cell = G.number_of_nodes() # default one electron per atom
@@ -124,8 +125,9 @@ def fermi_level(G, outer_nodes, hopping = -1, ka_num = 100, electrons_per_cell =
     for i,maxima in enumerate(band_maxima):
         if fermi_level == maxima:
             if i+1 < len(band_minima): #ensure it isn't the top band
+                band_gap = band_minima[i+1] - fermi_level
                 fermi_level = (fermi_level + band_minima[i+1]) / 2
-    return fermi_level
+    return fermi_level, band_gap
 
 def plot_bands(G, axis, outer_nodes, hopping = -1, ka_num = 100, electrons_per_cell = None, title = 'Band Structure'):
     '''
@@ -143,7 +145,7 @@ def plot_bands(G, axis, outer_nodes, hopping = -1, ka_num = 100, electrons_per_c
     for i in range(G.number_of_nodes()):
         axis.plot(ka, bands[:, i]) # plotting bands
     for e in electrons_per_cell:
-        fermilevel = fermi_level(G, outer_nodes, hopping, ka_num, e)
+        fermilevel, gap = fermi_level(G, outer_nodes, hopping, ka_num, e)
         axis.axhline(fermilevel, color = 'k', linestyle = '--', label = 'Fermi Level, n = {}'.format(e))
         axis.text(np.pi, fermilevel + 0.1, 'n = {}'.format(e), color='k', ha='center')
     tick_labels = [r'$-\frac{\pi}{a}$', r'$-\frac{\pi}{2a}$', r'$0$', r'$\frac{\pi}{2a}$', r'$\frac{\pi}{a}$']
