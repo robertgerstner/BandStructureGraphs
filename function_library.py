@@ -17,6 +17,7 @@ List of functions in this library:
 - band_structure: computes the band structure of the 1d chain
 - fermi_level: computes the fermi level of the 1d chain
 - plot_bands: plots the band structure of the 1d chain
+- graph_with_bands: displays the unit cell graph along with the band structure
 '''
 
 
@@ -27,13 +28,7 @@ def display_chain(G, axis, outer_nodes = [0,1], layout = None):
     - G: networkx graph representing the unit cell.
     - axis: axis to plot it on
     - outer_nodes: list of the two nodes connected to adjacent unit cells (default [0,1]).
-    - layout: layout for graph display (default spring_layout)
-    '''
-    '''
-    to do:
-    - implement a way to scale the size of the nodes and edges by the size of their onsite energies or hopping amplitudes
-    - perhaps implement a colormap for the above
-    - figure out how to center it on a linear chain using the outer nodes
+    - layout: layout for graph display (current options: spring (default), circular)
     '''
     # compute layout
     outer_positions = {outer_nodes[0]: (-1,0), outer_nodes[1]: (1,0)}
@@ -41,6 +36,8 @@ def display_chain(G, axis, outer_nodes = [0,1], layout = None):
         pos = nx.spring_layout(G, pos = outer_positions, fixed = outer_nodes)
     elif layout == 'circular':
         pos = nx.circular_layout(G, center = outer_nodes)
+    else:
+        print('error: invalid layout, enter circular or none')
     # Draw graph
     nx.draw_networkx(G, 
                      pos = pos,
@@ -91,8 +88,6 @@ def band_structure(G, outer_nodes, hopping = -1, ka_num = 100):
     bands = np.sort(eigenvalues, axis = 1) # sort into bands
     return bands
 
-# more efficient implementations for specific cases
-
 def fermi_level(G, outer_nodes, hopping = -1, ka_num = 100, electrons_per_cell = None):
     '''
     Function to compute the band structure of the 1d chain with unit cell given by the graph G.
@@ -132,13 +127,14 @@ def fermi_level(G, outer_nodes, hopping = -1, ka_num = 100, electrons_per_cell =
 def plot_bands(G, axis, outer_nodes, hopping = -1, ka_num = 100, electrons_per_cell = None, title = 'Band Structure'):
     '''
     Function to plot the band structure of the 1d chain with unit cell given by the graph G.
+    Inputs:
     - G: networkx graph representing the unit cell.
     - axis: axis to plot it on
     - outer_nodes: list of the two nodes connected to adjacent unit cells.
     - hopping: hopping amplitude between the atoms connecting unit cells (default -1).
     - ka_num: discretized number of momentum points to evaluate (default 100).
     - electrons_per_cell: list of number of electrons per cell for fermi level calculation (default one per atom).
-    - title: string, title for plot.
+    - title: string, title for plot (default 'Band Structure').
     '''
     bands = band_structure(G, outer_nodes, hopping, ka_num)
     ka = np.linspace(-np.pi, np.pi, ka_num)
@@ -159,7 +155,15 @@ def plot_bands(G, axis, outer_nodes, hopping = -1, ka_num = 100, electrons_per_c
 
 def graph_with_bands(G, outer_nodes, hopping = -1, ka_num = 100, electrons_per_cell = None, title = None, layout = None):
     '''
-    Function to plot both the graph drawing and the band structure as one figure.
+    Function to plot both the graph drawing and the band structure in one combined figure.
+    Inputs:
+    - G: networkx graph representing the unit cell.
+    - outer_nodes: list of the two nodes connected to adjacent unit cells.
+    - hopping: hopping amplitude between the atoms connecting unit cells (default -1).
+    - ka_num: discretized number of momentum points to evaluate (default 100).
+    - electrons_per_cell: list of number of electrons per cell for fermi level calculations (default one per atom).
+    - title: string, title for combined plot.
+    - layout: layout for graph display (current options: spring (default), circular)
     '''
     fig, (axis1, axis2) = plt.subplots(1, 2, figsize=(12, 6))
     fig.suptitle(title)
@@ -167,25 +171,3 @@ def graph_with_bands(G, outer_nodes, hopping = -1, ka_num = 100, electrons_per_c
     plot_bands(G, axis = axis2, outer_nodes = outer_nodes, hopping = hopping, electrons_per_cell = electrons_per_cell)
     plt.tight_layout()
     plt.show()
-
-
-# testing
-
-# G = nx.Graph()
-# G.add_nodes_from([0,1,2,3])
-# G.add_weighted_edges_from([(0,1,1.5), (1,2,1.9), (2,3,3.2), (1,3,1)])
-# outer_nodes = [0,3]
-# display_chain(G, outer_nodes)
-# plt.show()
-
-# G1 = nx.Graph()
-# G1.add_nodes_from([0,1,2,3,4])
-# G1.add_edges_from([(0,1),(1,2),(2,4),(0,3),(3,4)])
-
-# shortest_paths = list(nx.shortest_path(G1, source=0, target=4))
-
-# G1_reduced = G1.subgraph([node for node in G1.nodes if node not in shortest_paths or node in [0, 4]])
-
-# nx.draw_networkx(G1_reduced)
-
-# plt.show()
