@@ -21,7 +21,7 @@ List of functions in this library:
 '''
 
 
-def display_chain(G, axis, outer_nodes = [0,1], layout = None):
+def display_chain(G, axis, outer_nodes = [0,1], layout = None, title = 'Graph Drawing'):
     '''
     Function to display a unit cell of the one-dimensional periodic atomic chain.
     Inputs:
@@ -63,7 +63,7 @@ def display_chain(G, axis, outer_nodes = [0,1], layout = None):
                                  font_color = 'k',
                                  ax = axis,
                                  clip_on = True)
-    axis.set_title('Graph Drawing')
+    axis.set_title(title)
     
 
 def band_structure(G, outer_nodes, hopping = -1, ka_num = 100):
