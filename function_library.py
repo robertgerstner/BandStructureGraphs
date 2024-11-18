@@ -39,6 +39,11 @@ def display_chain(G, axis, outer_nodes = [0,1], layout = None, title = 'Graph Dr
     else:
         print('error: invalid layout, enter circular or none')
         return
+    # Add dangling edges on outer nodes
+    G.add_edge(f'{outer_nodes[0]}-left', outer_nodes[0], weight = 0)
+    pos[f'{outer_nodes[0]}-left'] = (pos[outer_nodes[0]][0] - 0.1, pos[outer_nodes[0]][1])
+    G.add_edge(f'{outer_nodes[1]}-right', outer_nodes[1], weight = 0)
+    pos[f'{outer_nodes[1]}-right'] = (pos[outer_nodes[1]][0] + 0.1, pos[outer_nodes[1]][1])
     # Draw graph
     nx.draw_networkx(G, 
                      pos = pos,
@@ -66,11 +71,6 @@ def display_chain(G, axis, outer_nodes = [0,1], layout = None, title = 'Graph Dr
                                  font_color = 'k',
                                  ax = axis,
                                  clip_on = True)
-    # Add horizontal lines for outer edges to indicate unit cell connections
-    x0, y0 = outer_positions[outer_nodes[0]]
-    x1, y1 = outer_positions[outer_nodes[1]]
-    axis.plot([x0 - 0.1, x0], [y0, y0], color='black', linestyle='-', linewidth=1)
-    axis.plot([x1, x1 + 0.1], [y1, y1], color='black', linestyle='-', linewidth=1)
     axis.set_title(title)
     
 
