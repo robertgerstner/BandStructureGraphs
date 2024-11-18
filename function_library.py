@@ -39,12 +39,6 @@ def display_chain(G, axis, outer_nodes = [0,1], layout = None, title = 'Graph Dr
     else:
         print('error: invalid layout, enter circular or none')
         return
-    # Add dangling edges on outer nodes
-    G.add_edge(f'{outer_nodes[0]}-left', outer_nodes[0], weight = 0)
-    pos[f'{outer_nodes[0]}-left'] = (pos[outer_nodes[0]][0] - 0.1, pos[outer_nodes[0]][1])
-    G.add_edge(f'{outer_nodes[1]}-right', outer_nodes[1], weight = 0)
-    pos[f'{outer_nodes[1]}-right'] = (pos[outer_nodes[1]][0] + 0.1, pos[outer_nodes[1]][1])
-    # Draw graph
     nx.draw_networkx(G, 
                      pos = pos,
                      arrows = None, #must be an undirected graph
