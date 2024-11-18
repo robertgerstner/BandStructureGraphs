@@ -127,23 +127,23 @@ graph_with_bands(sparseGraph, [0,1], electrons_per_cell = [15], title = title)
 
 # Relation between sparsity and band gap
 
-N = 10
-band_gaps = []
-sparsity = np.linspace(0.10, 1, 1000)
-#print(sparsity)
-for density in sparsity:
-    connected = False
-    while not connected:
-        adjacency = random(N, N, density = density).toarray()
-        adjacency = np.triu(adjacency) + np.triu(adjacency, 1).T
-        graph = nx.from_numpy_array(adjacency)
-        if nx.is_connected(graph):
-            connected = True
-    fermi, gap = fermi_level(graph, [0,1], electrons_per_cell = N)
-    band_gaps.append(gap)
-fig, ax = plt.subplots()
-ax.scatter(sparsity, band_gaps, c = 'k', s = 10)
-ax.set_xlabel('Density of Adjacency Matrix')
-ax.set_ylabel('Band Gap at Half Filling')
-ax.set_title('10-Node Random Graph')
-plt.show()
+# N = 10
+# band_gaps = []
+# sparsity = np.linspace(0.10, 1, 1000)
+# #print(sparsity)
+# for density in sparsity:
+#     connected = False
+#     while not connected:
+#         adjacency = random(N, N, density = density).toarray()
+#         adjacency = np.triu(adjacency) + np.triu(adjacency, 1).T
+#         graph = nx.from_numpy_array(adjacency)
+#         if nx.is_connected(graph):
+#             connected = True
+#     fermi, gap = fermi_level(graph, [0,1], electrons_per_cell = N)
+#     band_gaps.append(gap)
+# fig, ax = plt.subplots()
+# ax.scatter(sparsity, band_gaps, c = 'k', s = 10)
+# ax.set_xlabel('Density of Adjacency Matrix')
+# ax.set_ylabel('Band Gap at Half Filling')
+# ax.set_title('10-Node Random Graph')
+# plt.show()
