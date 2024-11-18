@@ -35,7 +35,7 @@ while not connected: # ensure we get a connected graph
     sparseGraph = nx.from_numpy_array(adjacency2)
     if nx.is_connected(sparseGraph):
         connected = True
-display_chain(sparseGraph, ax2, title = None )
+display_chain(sparseGraph, ax2, title = None)
 plt.show()
 
 # CLASS 1: CIRCULAR CHAINS
@@ -45,7 +45,7 @@ plt.show()
 N = 10
 circularGraph = nx.cycle_graph(N)
 outer_nodes = [0, int(N/2)]
-electrons = [5,10,14,20]
+electrons = [5, 10, 14, 20]
 title = 'Circular Chain of 10 Atoms; Uniform Hopping; Zero On-Site Energies'
 graph_with_bands(circularGraph, outer_nodes, hopping = 1, electrons_per_cell = electrons, title = title, layout = 'circular')
 
@@ -69,7 +69,7 @@ adjacency[0, N-1] = hopping_strengths[N-1] # pbc
 adjacency[N-1, 0] = hopping_strengths[N-1]
 circularGraph = nx.from_numpy_array(adjacency)
 outer_nodes = [0, int(N/2)]
-electrons = [5,10,14,20]
+electrons = [5, 10, 14, 20]
 title = 'Circular Chain of 10 Atoms; Hoppings Alternate between -1 and -2; Zero On-Site Energy'
 graph_with_bands(circularGraph, outer_nodes, hopping = -1, electrons_per_cell = electrons, title = title, layout = 'circular')
 
@@ -82,7 +82,7 @@ adjacency[0, N-1] = hopping_strengths[N-1] # pbc
 adjacency[N-1, 0] = hopping_strengths[N-1]
 circularGraph = nx.from_numpy_array(adjacency)
 outer_nodes = [0, int(N/2)]
-electrons = [5,10,14,20]
+electrons = [5, 10, 14, 20]
 title = 'Circular Chain of 10 Atoms; Hoppings and On-Site Energies Range from -1 to -10'
 graph_with_bands(circularGraph, outer_nodes, hopping = -1, electrons_per_cell = electrons, title = title, layout = 'circular')
 
@@ -96,11 +96,11 @@ adjacency[0, N-1] = hopping_strengths[N-1] # pbc
 adjacency[N-1, 0] = hopping_strengths[N-1]
 circularGraph = nx.from_numpy_array(adjacency)
 outer_nodes = [0, int(N/2)]
-electrons = [5,10,14,20]
+electrons = [5, 10, 14, 20]
 title = 'Circular Chain of 10 Atoms; Random Hoppings and On-Site Energies'
 graph_with_bands(circularGraph, outer_nodes, hopping = -1, electrons_per_cell = electrons, title = title, layout = 'circular')
 
-# CLASS 3: RANDOM MATRICES
+# CLASS 2: RANDOM MATRICES
 
 N = 6
 connected = False
@@ -139,10 +139,9 @@ for density in sparsity:
         graph = nx.from_numpy_array(adjacency)
         if nx.is_connected(graph):
             connected = True
-    #graph_with_bands(graph, [0,1], electrons_per_cell = [N])
     fermi, gap = fermi_level(graph, [0,1], electrons_per_cell = N)
     band_gaps.append(gap)
-fig,ax = plt.subplots()
+fig, ax = plt.subplots()
 ax.scatter(sparsity, band_gaps, c = 'k', s = 10)
 ax.set_xlabel('Density of Adjacency Matrix')
 ax.set_ylabel('Band Gap at Half Filling')

@@ -38,6 +38,7 @@ def display_chain(G, axis, outer_nodes = [0,1], layout = None, title = 'Graph Dr
         pos = nx.circular_layout(G, center = outer_nodes)
     else:
         print('error: invalid layout, enter circular or none')
+        return
     # Draw graph
     nx.draw_networkx(G, 
                      pos = pos,
