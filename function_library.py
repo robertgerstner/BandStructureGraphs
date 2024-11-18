@@ -66,6 +66,9 @@ def display_chain(G, axis, outer_nodes = [0,1], layout = None, title = 'Graph Dr
                                  font_color = 'k',
                                  ax = axis,
                                  clip_on = True)
+    # Add horizontal lines for outer edges to indicate unit cell connections
+    axis.plot([-1.1, -1], [0, 0], color='k', linestyle='-', linewidth=1)
+    axis.plot([1, 1.1], [0, 0], color='k', linestyle='-', linewidth=1)
     axis.set_title(title)
     
 
