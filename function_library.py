@@ -61,7 +61,7 @@ def display_chain(G, axis, outer_nodes = [0,1], layout = None, title = 'Graph Dr
                                  pos = pos,
                                  edge_labels = rounded_weights,
                                  label_pos = 0.5, 
-                                 font_size = 8,
+                                 font_size = 12,
                                  font_color = 'k',
                                  ax = axis,
                                  clip_on = True)
@@ -142,7 +142,7 @@ def plot_bands(G, axis, outer_nodes, hopping = -1, ka_num = 100, electrons_per_c
     bands = band_structure(G, outer_nodes, hopping, ka_num)
     ka = np.linspace(-np.pi, np.pi, ka_num)
     for i in range(G.number_of_nodes()):
-        axis.plot(ka, bands[:, i]) # plotting bands
+        axis.plot(ka, bands[:, i], color = 'blue') # plotting bands
     for e in electrons_per_cell:
         fermilevel, gap = fermi_level(G, outer_nodes, hopping, ka_num, e)
         axis.axhline(fermilevel, color = 'k', linestyle = '--', label = 'Fermi Level, n = {}'.format(e))
@@ -169,7 +169,7 @@ def graph_with_bands(G, outer_nodes, hopping = -1, ka_num = 100, electrons_per_c
     - layout: layout for graph display (current options: spring (default), circular)
     '''
     fig, (axis1, axis2) = plt.subplots(1, 2, figsize=(12, 6))
-    fig.suptitle(title)
+    fig.suptitle(title, fontsize = 20)
     display_chain(G, axis = axis1, outer_nodes = outer_nodes, layout = layout)
     plot_bands(G, axis = axis2, outer_nodes = outer_nodes, hopping = hopping, electrons_per_cell = electrons_per_cell)
     plt.tight_layout()
